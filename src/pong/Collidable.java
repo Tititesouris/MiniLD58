@@ -13,16 +13,6 @@ import org.newdawn.slick.geom.Shape;
 public class Collidable implements Constants {
 
     /**
-     * X coordinate of the collidable.
-     */
-    private int x;
-
-    /**
-     * Y coordinate of the collidable.
-     */
-    private int y;
-
-    /**
      * Shape of the collidable.
      */
     private Shape shape;
@@ -30,13 +20,9 @@ public class Collidable implements Constants {
     /**
      * Creates a new collidable.
      *
-     * @param x     X position of the collidable.
-     * @param y     Y position of the collidable.
      * @param shape Shape of the new collidable.
      */
-    public Collidable(int x, int y, Shape shape) {
-        this.x = x;
-        this.y = y;
+    public Collidable(Shape shape) {
         this.shape = shape;
     }
 
@@ -55,21 +41,42 @@ public class Collidable implements Constants {
      *
      * @return  X coordinate of the collidable.
      */
-    public int getX() { return x; }
+    public int getX() { return (int)shape.getX(); }
 
     /**
      * Returns the Y coordinate of the collidable.
      *
      * @return  Y coordinate of the collidable.
      */
-    public int getY() { return y; }
+    public int getY() { return (int)shape.getY(); }
 
     /**
-     * Returns the shape of the collidable.
+     * Returns the width of the collidable.
      *
-     * @return  Shape of the collidable.
+     * @return  Width of the collidable.
      */
-    public Shape getShape() { return shape; }
+    public int getWidth() { return (int)shape.getWidth(); }
+
+    /**
+     * Returns the height of the collidable.
+     *
+     * @return  Height of the collidable.
+     */
+    public int getHeight() { return (int)shape.getHeight(); }
+
+    /**
+     * Changes the X position of the collidable to the one specified.
+     *
+     * @param x New X position of the collidable.
+     */
+    public void setX(int x) { shape.setX(x); }
+
+    /**
+     * Changes the Y position of the collidable to the one specified.
+     *
+     * @param y New Y position of the collidable.
+     */
+    public void setY(int y) { shape.setY(y); }
 
     /**
      * Returns the information about the collidable.
@@ -77,7 +84,7 @@ public class Collidable implements Constants {
      * @return  Information about the collidable.
      */
     public String toString() {
-        return "X: " + x + " Y:" + y + " Shape: " + shape.toString();
+        return "X: " + getX() + " Y:" + getY() + " Shape: " + shape.toString();
     }
 
 }

@@ -2,7 +2,6 @@
 package pong;
 
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Shape;
 
 /**
  * Goal represents the area where the ball goes to score.
@@ -28,7 +27,7 @@ public class Goal extends Collidable {
      * @param owner     Owner of the goal.
      */
     public Goal(int x, int y, int width, int height, Player owner) {
-        super(x, y, new Rectangle(x, y, width, height));
+        super(new Rectangle(x, y, width, height));
         this.owner = owner;
     }
 

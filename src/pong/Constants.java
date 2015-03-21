@@ -1,6 +1,8 @@
 
 package pong;
 
+import org.newdawn.slick.Input;
+
 /**
  * Constants is the interface regrouping all the game constants and paths.
  *
@@ -34,5 +36,20 @@ public interface Constants {
      * Paddle sprites directory location.
      */
     String PADDLES_DIR = SPRITES_DIR + "paddles/";
+
+    /**
+     * Action key for players.
+     */
+    int[] ACTION = new int[] { Input.KEY_SPACE, Input.KEY_ENTER };
+
+    /**
+     * Up key for players.
+     */
+    int[] UP = new int[] { Input.KEY_W, Input.KEY_UP };
+
+    /**
+     * Down key for players.
+     */
+    int[] DOWN = new int[] { Input.KEY_S, Input.KEY_DOWN };
 
 }

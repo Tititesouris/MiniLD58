@@ -1,6 +1,7 @@
 
 package pong;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
@@ -28,12 +29,13 @@ public class Game extends Scene {
         super.init(gameContainer);
 
         gameInfo = new GameInfo();
-        gameField = new GameField(0, 100, gameContainer.getWidth(), gameContainer.getHeight());
+        gameField = new GameField(0, 100, gameContainer.getWidth(), gameContainer.getHeight() - 100);
     }
 
     @Override
     public void update(GameContainer gameContainer, int delta) {
-
+        //gameInfo.update();
+        gameField.update(gameContainer, delta);
     }
 
     @Override

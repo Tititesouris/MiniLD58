@@ -21,11 +21,60 @@ public class Player {
     private int score;
 
     /**
+     * The action key of the paddle.
+     */
+    private int actionKey;
+
+    /**
+     * The up key of the paddle.
+     */
+    private int upKey;
+
+    /**
+     * The down key of the paddle.
+     */
+    private int downKey;
+
+    /**
+     * Creates a new player.
+     *
+     * @param actionKey Action key.
+     * @param upKey     Up key.
+     * @param downKey   Down key.
+     */
+    public Player(int actionKey, int upKey, int downKey) {
+        this.actionKey = actionKey;
+        this.upKey = upKey;
+        this.downKey = downKey;
+    }
+
+    /**
      * Returns the paddle of the player.
      *
      * @return  Paddle of the player.
      */
     public Paddle getPaddle() { return paddle; }
+
+    /**
+     * Returns the action key of the player.
+     *
+     * @return  Action key of the player.
+     */
+    public int getActionKey() { return actionKey; }
+
+    /**
+     * Returns the up key of the player.
+     *
+     * @return  Up key of the player.
+     */
+    public int getUpKey() { return upKey; }
+
+    /**
+     * Returns the down key of the player.
+     *
+     * @return  Down key of the player.
+     */
+    public int getDownKey() { return downKey; }
 
     /**
      * Changes the paddle of the player.

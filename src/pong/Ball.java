@@ -1,6 +1,7 @@
 
 package pong;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Circle;
@@ -22,13 +23,24 @@ public class Ball extends Entity {
      * @param radius    Radius of the ball.
      */
     public Ball(int x, int y, int radius) {
-        super(x, y, new Circle(x, y, radius));
+        super(new Circle(x, y, radius));
         try {
             setSprite(new Image(BALLS_DIR + "default.png"));
         }
         catch (SlickException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Updates the ball.
+     *
+     * @param gameContainer The window container.
+     * @param delta         Time since the last update in milliseconds.
+     */
+    public void update(GameContainer gameContainer, int delta) {
+
+        super.update(gameContainer, delta);
     }
 
 }
