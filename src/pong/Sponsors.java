@@ -1,6 +1,7 @@
 
 package pong;
 
+import org.lwjgl.Sys;
 import org.newdawn.slick.*;
 
 import java.io.File;
@@ -101,6 +102,11 @@ public class Sponsors extends Scene {
     @Override
     public void update(GameContainer gameContainer, int delta) {
         time += delta;
+        Input input = gameContainer.getInput();
+        if (input.isKeyDown(Input.KEY_SPACE) || input.isKeyDown(Input.KEY_ESCAPE)) {
+            end();
+            setNextScene(new MainMenu());
+        }
     }
 
     @Override
@@ -117,10 +123,14 @@ public class Sponsors extends Scene {
                     image = image.getScaledCopy(Math.min((float) (gameContainer.getWidth() - borderSize) / image.getWidth(), (float) (gameContainer.getHeight() - borderSize) / image.getHeight()));
                 }
 
-                graphics.drawImage(
-                        image,
+                image.draw(
                         (gameContainer.getWidth() - image.getWidth()) / 2,
-                        (gameContainer.getHeight() - image.getHeight()) / 2
+                        (gameContainer.getHeight() - image.getHeight()) / 2,
+                        new Color(
+                                1f, 1f, 1f,
+                                // This works, it's magic, don't ask. And yes you did that yourself. GJ.
+                                Math.min(1, (float) time % displayTime / fadeTime) - (float)Math.max(0, time % displayTime - (displayTime - fadeTime)) / (displayTime - (displayTime - fadeTime))
+                        )
                 );
             }
             // If the sponsor has a text.

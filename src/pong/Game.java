@@ -63,7 +63,7 @@ public class Game extends BasicGame implements Constants {
 
     @Override
     public void init(GameContainer gameContainer) {
-        scene = new Sponsors(SPONSORS_DIR, 3000, 200);
+        scene = new Sponsors(SPONSORS_DIR, 5000, 1000);
         scene.init(gameContainer);
     }
 
