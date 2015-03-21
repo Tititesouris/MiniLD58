@@ -1,3 +1,5 @@
+.idea/
 MiniLD58.iml
 out/
-.idea/
+native/
+lib/
