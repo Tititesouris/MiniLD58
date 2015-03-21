@@ -1,83 +1,74 @@
 
 package pong;
 
-import org.newdawn.slick.*;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Game
+ * Game is the game screen scene. That's where the player plays the game.
  *
  * @author Tititesouris
  * @version 0.0.0
  * @since 2015-03-21
  */
-public class Game extends BasicGame implements Constants {
+public class Game extends Scene {
 
     /**
-     * When the game is in debug mode the FPS will be shown on screen.
+     * Amount of players.
      */
-    private static final boolean DEBUG = true;
+    private int nbPlayers;
 
     /**
-     * The maximum and target framerate of the game.
+     * List of the players playing.
      */
-    private static final int FPS = 60;
+    private Player[] players;
 
     /**
-     * The active scene.
+     * List of the balls in game.
      */
-    private Scene scene;
+    private List<Ball> balls;
 
     /**
-     * Runs the game when the program is executed.
-     *
-     * @param args  Words inputed when executing the program.
+     * Creates a new game.
      */
-    public static void main (String[] args) {
-
-        try {
-            AppGameContainer app = new AppGameContainer(new Game("Pong!"));
-            app.setDisplayMode(1080, 720, false);
-
-            app.setMaximumLogicUpdateInterval(FPS);
-            app.setTargetFrameRate(FPS);
-            app.setShowFPS(DEBUG);
-            // One 16x16 and one 32x32 image.
-            //app.setIcons();
-
-            app.start();
+    public Game() {
+        nbPlayers = 2;
+        players = new Player[nbPlayers];
+        for (int i = 0; i < nbPlayers; i++) {
+            players[i] = new Player();
         }
-        catch (SlickException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    /**
-     * Creates a new window using Slick2D.
-     *
-     * @param title Title of the window.
-     */
-    public Game(String title) {
-        super(title);
+        balls = new ArrayList<>();
+        balls.add(new Ball());
     }
 
     @Override
     public void init(GameContainer gameContainer) {
-        scene = new Sponsors(SPONSORS_DIR, 5000, 1000);
-        scene.init(gameContainer);
+        super.init(gameContainer);
+
     }
 
     @Override
     public void update(GameContainer gameContainer, int delta) {
-        scene.update(gameContainer, delta);
-        if (scene.isOver()) {
-            scene = scene.getNextScene();
-        }
+
     }
 
     @Override
     public void render(GameContainer gameContainer, Graphics graphics) {
-        scene.render(gameContainer, graphics);
+        for (Player player : players) {
+            Paddle paddle = player.getPaddle();
+            paddle.getSprite().draw(paddle.getX(), paddle.getY());
+        }
+        for (Ball ball : balls) {
+            ball.getSprite().draw(ball.getX(), ball.getY());
+        }
+    }
+
+    @Override
+    public String toString() {
+        return null;
     }
 
 }

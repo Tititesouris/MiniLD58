@@ -1,14 +1,13 @@
 
 package pong;
 
-import org.lwjgl.Sys;
 import org.newdawn.slick.*;
 
 import java.io.File;
 import java.util.*;
 
 /**
- * Sponsors is the first scene of the game.
+ * Sponsors the scene where all the sponsors are displayed, usually when launching the game.
  *
  * @author Tititesouris
  * @version 0.0.0
@@ -151,10 +150,10 @@ public class Sponsors extends Scene {
 
     @Override
     public String toString() {
-        String info = "";
+        String info = sponsors.size() + " sponsors: " + '\n';
         for (Map<String, Object> sponsor : sponsors) {
-            info += sponsor.toString();
+            info += "   " + sponsor.toString() + '\n';
         }
-        return info;
+        return info + "Display time of " + displayTime + " ms, fade in/out of " + fadeTime + " ms.";
     }
 }

@@ -15,12 +15,13 @@ public class MainMenu extends Scene {
 
     @Override
     public void update(GameContainer gameContainer, int delta) {
-
+        setNextScene(new Game());
+        end();
     }
 
     @Override
     public void render(GameContainer gameContainer, Graphics graphics) {
-        graphics.clear();
+
     }
 
     @Override

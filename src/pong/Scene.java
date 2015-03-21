@@ -4,7 +4,7 @@ package pong;
 import org.newdawn.slick.*;
 
 /**
- * Scene is the abstract class representing the different displays of the game.
+ * Scene is the superclass representing the different displays of the game.
  * E.g. The main menu, the game screen, the options menu, the sponsors screen...
  *
  * @author Tititesouris
