@@ -23,19 +23,22 @@ public class Collidable implements Constants {
     private int y;
 
     /**
-     * Width of the collidable.
-     */
-    private int width;
-
-    /**
      * Shape of the collidable.
      */
     private Shape shape;
 
     /**
-     * Height of the collidable.
+     * Creates a new collidable.
+     *
+     * @param x     X position of the collidable.
+     * @param y     Y position of the collidable.
+     * @param shape Shape of the new collidable.
      */
-    private int height;
+    public Collidable(int x, int y, Shape shape) {
+        this.x = x;
+        this.y = y;
+        this.shape = shape;
+    }
 
     /**
      * Returns true if this collidable collides with the specified collidable, false otherwise.
@@ -62,17 +65,19 @@ public class Collidable implements Constants {
     public int getY() { return y; }
 
     /**
-     * Returns the width of the collidable.
+     * Returns the shape of the collidable.
      *
-     * @return  Width of the collidable.
+     * @return  Shape of the collidable.
      */
-    public int getWidth() { return width; }
+    public Shape getShape() { return shape; }
 
     /**
-     * Returns the height of the collidable.
+     * Returns the information about the collidable.
      *
-     * @return  Height of the collidable.
+     * @return  Information about the collidable.
      */
-    public int getHeight() { return height; }
+    public String toString() {
+        return "X: " + x + " Y:" + y + " Shape: " + shape.toString();
+    }
 
 }

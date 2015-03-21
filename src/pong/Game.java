@@ -4,9 +4,6 @@ package pong;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Game is the game screen scene. That's where the player plays the game.
  *
@@ -17,37 +14,21 @@ import java.util.List;
 public class Game extends Scene {
 
     /**
-     * Amount of players.
+     * Information bar of the game.
      */
-    private int nbPlayers;
+    GameInfo gameInfo;
 
     /**
-     * List of the players playing.
+     * Game field of the game.
      */
-    private Player[] players;
-
-    /**
-     * List of the balls in game.
-     */
-    private List<Ball> balls;
-
-    /**
-     * Creates a new game.
-     */
-    public Game() {
-        nbPlayers = 2;
-        players = new Player[nbPlayers];
-        for (int i = 0; i < nbPlayers; i++) {
-            players[i] = new Player();
-        }
-        balls = new ArrayList<>();
-        balls.add(new Ball());
-    }
+    GameField gameField;
 
     @Override
     public void init(GameContainer gameContainer) {
         super.init(gameContainer);
 
+        gameInfo = new GameInfo();
+        gameField = new GameField(0, 100, gameContainer.getWidth(), gameContainer.getHeight());
     }
 
     @Override
@@ -57,13 +38,8 @@ public class Game extends Scene {
 
     @Override
     public void render(GameContainer gameContainer, Graphics graphics) {
-        for (Player player : players) {
-            Paddle paddle = player.getPaddle();
-            paddle.getSprite().draw(paddle.getX(), paddle.getY());
-        }
-        for (Ball ball : balls) {
-            ball.getSprite().draw(ball.getX(), ball.getY());
-        }
+        //gameInfo.render();
+        gameField.render(gameContainer, graphics);
     }
 
     @Override

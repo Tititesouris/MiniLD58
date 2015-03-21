@@ -3,6 +3,7 @@ package pong;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Circle;
 
 /**
  * Ball is the class for the balls.
@@ -15,8 +16,13 @@ public class Ball extends Entity {
 
     /**
      * Creates a new ball.
+     *
+     * @param x         X position of the ball.
+     * @param y         Y position of the ball.
+     * @param radius    Radius of the ball.
      */
-    public Ball() {
+    public Ball(int x, int y, int radius) {
+        super(x, y, new Circle(x, y, radius));
         try {
             setSprite(new Image(BALLS_DIR + "default.png"));
         }

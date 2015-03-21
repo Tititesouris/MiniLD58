@@ -21,18 +21,18 @@ public class Player {
     private int score;
 
     /**
-     * Creates a new player.
-     */
-    public Player() {
-        paddle = new Paddle();
-    }
-
-    /**
      * Returns the paddle of the player.
      *
      * @return  Paddle of the player.
      */
     public Paddle getPaddle() { return paddle; }
+
+    /**
+     * Changes the paddle of the player.
+     *
+     * @param paddle    New paddle of the player.
+     */
+    public void setPaddle(Paddle paddle) { this.paddle = paddle; }
 
     /**
      * Returns the score of the player.
