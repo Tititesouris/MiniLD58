@@ -13,12 +13,17 @@ import org.newdawn.slick.geom.Shape;
  * @version 0.0.0
  * @since 2015-03-21
  */
-public class Entity extends Collidable {
+public abstract class Entity extends Collidable {
 
     /**
      * Speed vector of the entity.
      */
     private Point2D speed;
+
+    /**
+     * The maximum speed of the entity.
+     */
+    private double maxSpeed;
 
     /**
      * Sprite of the entity.
@@ -28,11 +33,14 @@ public class Entity extends Collidable {
     /**
      * Creates a new entity.
      *
-     * @param shape Shape of the new collidable.
+     * @param shape     Shape of the new collidable.
+     * @param filled    Whether or not the collidable occupies the whole area, and is not just a border.
+     * @param maxSpeed  Maximum speed of the entity.
      */
-    public Entity(Shape shape) {
-        super(shape);
+    public Entity(Shape shape, boolean filled, double maxSpeed) {
+        super(shape, filled);
         speed = new Point2D(0, 0);
+        this.maxSpeed = maxSpeed;
     }
 
     /**
@@ -48,6 +56,12 @@ public class Entity extends Collidable {
     public Point2D getSpeed() { return speed; }
 
     /**
+     * Returns the maximum speed of the entity.
+     * @return  Maximum speed of the entity.
+     */
+    public double getMaxSpeed() { return maxSpeed; }
+
+    /**
      * Changes the sprite of the entity to the one specified.
      *
      * @param sprite    New sprite of the entity.
@@ -61,6 +75,12 @@ public class Entity extends Collidable {
      */
     public void setSpeed(Point2D speed) { this.speed = speed; }
 
+    @Override
+    public void setRotation(float angle) {
+        super.setRotation(angle);
+        sprite.rotate(angle);
+    }
+
     /**
      * Updates the entity.
      *
@@ -68,8 +88,9 @@ public class Entity extends Collidable {
      * @param delta         Time since the last update in milliseconds.
      */
     public void update(GameContainer gameContainer, int delta) {
-        setX(getX() + (int)speed.getX());
-        setY(getY() + (int) speed.getY());
+        speed.normalize();
+        setX(getX() + (float) (speed.getX() * maxSpeed * (delta / 10f)));
+        setY(getY() + (float)(speed.getY() * maxSpeed * (delta / 10f)));
     }
 
     /**
@@ -80,6 +101,7 @@ public class Entity extends Collidable {
      */
     public void render(GameContainer gameContainer, Graphics graphics) {
         sprite.draw(getX(), getY());
+        graphics.drawRect(getX()-5, getY(), getWidth(), getHeight());
     }
 
     /**
@@ -88,7 +110,7 @@ public class Entity extends Collidable {
      * @return  Information about the entity.
      */
     public String toString() {
-        return super.toString() + " Sprite: " + ((sprite != null) ? sprite.toString() : "");
+        return super.toString() + " Sprite: " + ((sprite != null) ? sprite.toString() : "null");
     }
 
 }

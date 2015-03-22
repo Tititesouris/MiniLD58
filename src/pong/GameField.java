@@ -1,11 +1,14 @@
 
 package pong;
 
+import javafx.geometry.Point2D;
 import org.newdawn.slick.*;
+import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * GameField is the area of the screen containing the game elements.
@@ -17,6 +20,11 @@ import java.util.List;
  * @since 2015-03-21
  */
 public class GameField extends Collidable {
+
+    /**
+     * Random generator.
+     */
+    private static final Random rand = new Random();
 
     /**
      * Background image of the game field.
@@ -42,11 +50,10 @@ public class GameField extends Collidable {
      * @param height    Height of the goal.
      */
     public GameField(int x, int y, int width, int height) {
-        super(new Rectangle(x, y, width, height));
+        super(new Polygon(new float[]{x, y, x + width, y, x + width, y + height, x, y + height}), false);
         try {
             sprite = new Image(RES_DIR + "temp.png");
-        }
-        catch (SlickException e) {
+        } catch (SlickException e) {
             e.printStackTrace();
         }
         players = new Player[2];
@@ -64,12 +71,12 @@ public class GameField extends Collidable {
                     players[i]
             );
             // Rotate the paddle to face the center.
-            paddle.getSprite().rotate(90 - i * 180);
+            //paddle.setRotation(90 - i * 180);
             players[i].setPaddle(paddle);
 
             // Create the player's goal.
             new Goal(
-                    x + i * (width - 10),
+                    x + i * (width - 20),
                     y,
                     10,
                     height,
@@ -80,11 +87,14 @@ public class GameField extends Collidable {
 
         // Create the first ball.
         balls = new ArrayList<>();
-        balls.add(new Ball(
+        Ball ball = new Ball(
                 x + width / 2 - 16,
                 y + height / 2 - 16,
                 16
-        ));
+        );
+        balls.add(ball);
+        // Give the ball some starting speed.
+        ball.setSpeed(new Point2D((rand.nextFloat() < 0.5f) ? -1 : 1, (rand.nextDouble() * 2 - 1) * 5));
     }
 
     /**
@@ -109,7 +119,7 @@ public class GameField extends Collidable {
      * @param graphics      The graphics context.
      */
     public void render(GameContainer gameContainer, Graphics graphics) {
-        graphics.drawImage(sprite.getScaledCopy(getWidth(), getHeight()), getX(), getY());
+        graphics.drawImage(sprite.getScaledCopy((int)getWidth(), (int)getHeight()), getX(), getY());
 
         for (Player player : players) {
             player.getPaddle().render(gameContainer, graphics);

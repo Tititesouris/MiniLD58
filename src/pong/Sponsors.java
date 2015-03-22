@@ -91,6 +91,7 @@ public class Sponsors extends BasicGameState {
                     } else if (file.getName().endsWith(".txt")) {
                         Scanner scanner = new Scanner(file);
                         sponsor.put("text", scanner.nextLine());
+                        scanner.close();
                     }
 
                 }

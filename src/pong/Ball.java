@@ -6,6 +6,9 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Circle;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Ball is the class for the balls.
  *
@@ -23,7 +26,7 @@ public class Ball extends Entity {
      * @param radius    Radius of the ball.
      */
     public Ball(int x, int y, int radius) {
-        super(new Circle(x, y, radius));
+        super(new Circle(x, y, radius), true, 0.4);
         try {
             setSprite(new Image(BALLS_DIR + "default.png"));
         }
@@ -39,8 +42,19 @@ public class Ball extends Entity {
      * @param delta         Time since the last update in milliseconds.
      */
     public void update(GameContainer gameContainer, int delta) {
-
         super.update(gameContainer, delta);
+        if (getColliding().size() > 0) {
+            setSpeed(getSpeed().multiply(-1));
+        }
+    }
+
+    /**
+     * Returns the information about the ball.
+     *
+     * @return  Information about the ball.
+     */
+    public String toString() {
+        return "Ball | " + super.toString();
     }
 
 }

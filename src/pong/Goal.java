@@ -1,6 +1,7 @@
 
 package pong;
 
+import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
 
 /**
@@ -27,7 +28,7 @@ public class Goal extends Collidable {
      * @param owner     Owner of the goal.
      */
     public Goal(int x, int y, int width, int height, Player owner) {
-        super(new Rectangle(x, y, width, height));
+        super(new Polygon(new float[]{x, y, x + width, y, x + width, y + height, x, y + height}), true);
         this.owner = owner;
     }
 
@@ -37,5 +38,15 @@ public class Goal extends Collidable {
      * @return  Owner of the goal.
      */
     public Player getOwner() { return owner; }
+
+
+    /**
+     * Returns the information about the goal.
+     *
+     * @return  Information about the goal.
+     */
+    public String toString() {
+        return "Goal | " + super.toString() + " Owner: " + owner;
+    }
 
 }

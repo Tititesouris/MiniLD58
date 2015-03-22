@@ -3,8 +3,6 @@ package pong;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.state.transition.FadeInTransition;
-import org.newdawn.slick.state.transition.FadeOutTransition;
 
 /**
  * Program is the Main class of the program. This is where everything starts.

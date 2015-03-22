@@ -6,6 +6,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Rectangle;
 
 /**
@@ -23,11 +24,6 @@ public class Paddle extends Entity {
     private Player owner;
 
     /**
-     * The maximum speed of the paddle.
-     */
-    private float maxSpeed;
-
-    /**
      * Creates a new paddle.
      *
      * @param x         X position of the paddle.
@@ -37,9 +33,8 @@ public class Paddle extends Entity {
      * @param owner     Owner of the paddle.
      */
     public Paddle(int x, int y, int width, int height, Player owner) {
-        super(new Rectangle(x, y, width, height));
+        super(new Polygon(new float[]{x, y, x + width, y, x + width, y + height, x, y + height}), true, 0.5);
         this.owner = owner;
-        maxSpeed = 0.25f;
 
         try {
             setSprite(new Image(PADDLES_DIR + "default.png"));
@@ -47,7 +42,6 @@ public class Paddle extends Entity {
         catch (SlickException e) {
             e.printStackTrace();
         }
-
         getSprite().setCenterOfRotation(width / 2, height / 2);
     }
 
@@ -67,10 +61,11 @@ public class Paddle extends Entity {
     public void update(GameContainer gameContainer, int delta) {
         Input input = gameContainer.getInput();
         if (input.isKeyDown(owner.getUpKey()) && !input.isKeyDown(owner.getDownKey())) {
-            setSpeed(new Point2D(0, -maxSpeed * delta));
+            setSpeed(new Point2D(0, -getMaxSpeed() * delta));
+            setRotation(2);
         }
         else if (input.isKeyDown(owner.getDownKey()) && !input.isKeyDown(owner.getUpKey())) {
-            setSpeed(new Point2D(0, maxSpeed * delta));
+            setSpeed(new Point2D(0, getMaxSpeed() * delta));
         }
         else {
             // Slow the paddle down.
@@ -85,7 +80,7 @@ public class Paddle extends Entity {
      * @return  Information about the paddle.
      */
     public String toString() {
-        return super.toString() + " Owner: " + owner;
+        return "Paddle | " + super.toString() + " Owner: " + owner;
     }
 
 }

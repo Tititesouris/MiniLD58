@@ -17,12 +17,12 @@ public class Game extends BasicGameState {
     /**
      * Information bar of the game.
      */
-    GameInfo gameInfo;
+    private GameInfo gameInfo;
 
     /**
      * Game field of the game.
      */
-    GameField gameField;
+    private GameField gameField;
 
     @Override
     public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) {
