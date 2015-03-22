@@ -2,6 +2,10 @@
 package pong;
 
 import org.newdawn.slick.*;
+import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 
 import java.io.File;
 import java.util.*;
@@ -13,7 +17,7 @@ import java.util.*;
  * @version 0.0.0
  * @since 2015-03-21
  */
-public class Sponsors extends Scene {
+public class Sponsors extends BasicGameState {
 
     /**
      * Directory regrouping the sponsors information.
@@ -46,25 +50,27 @@ public class Sponsors extends Scene {
     private int fadeTime;
 
     /**
+     * Current sponsor id.
+     */
+    private int sponsorId;
+
+    /**
      * Creates a new sponsors scene.
      *
-     * @param directory     Directory regrouping the sponsors information.
-     * @param displayTime   Display time for each sponsor in milliseconds.
-     * @param fadeTime      Fade in/out time in milliseconds.
+     * @param directory   Directory regrouping the sponsors information.
+     * @param displayTime Display time for each sponsor in milliseconds.
+     * @param fadeTime    Fade in/out time in milliseconds.
      */
     public Sponsors(String directory, int displayTime, int fadeTime) {
         this.directory = directory;
         this.displayTime = displayTime;
         this.fadeTime = fadeTime;
+        sponsors = new ArrayList<>();
+        borderSize = 50;
     }
 
     @Override
-    public void init(GameContainer gameContainer) {
-        super.init(gameContainer);
-
-        sponsors = new ArrayList<>();
-        borderSize = 50;
-
+    public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) {
         try {
             // Get all the sponsors information.
             File[] dirs = new File(directory).listFiles();
@@ -82,8 +88,7 @@ public class Sponsors extends Scene {
                     // Store valid information.
                     if (file.getName().endsWith(".png")) {
                         sponsor.put("image", new Image(file.getPath()));
-                    }
-                    else if (file.getName().endsWith(".txt")) {
+                    } else if (file.getName().endsWith(".txt")) {
                         Scanner scanner = new Scanner(file);
                         sponsor.put("text", scanner.nextLine());
                     }
@@ -92,68 +97,68 @@ public class Sponsors extends Scene {
                 // Add the sponsor to the list of sponsors.
                 sponsors.add(sponsor);
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void update(GameContainer gameContainer, int delta) {
-        time += delta;
-        Input input = gameContainer.getInput();
-        if (input.isKeyDown(Input.KEY_SPACE) || input.isKeyDown(Input.KEY_ESCAPE)) {
-            end();
-            setNextScene(new MainMenu());
+    public void leave(GameContainer gameContainer, StateBasedGame stateBasedGame) {
+        sponsorId++;
+        if (sponsorId >= sponsors.size()) {
+            stateBasedGame.enterState(1, new FadeOutTransition(Color.black, fadeTime), new FadeInTransition());
         }
     }
 
     @Override
-    public void render(GameContainer gameContainer, Graphics graphics) {
-        // If there is more sponsors to display.
-        if (time / displayTime < sponsors.size()) {
-            // Get the information about the sponsor to display.
-            Map<String, Object> sponsor = sponsors.get(time / displayTime);
+    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int delta) {
+        time += delta;
+        Input input = gameContainer.getInput();
+        if (input.isKeyDown(Input.KEY_SPACE) || input.isKeyDown(Input.KEY_ESCAPE)) {
+            stateBasedGame.enterState(1, new FadeOutTransition(), new FadeInTransition());
+        }
+        if (time >= displayTime - fadeTime) {
+            time = 0;
+            stateBasedGame.enterState(getID(), new FadeOutTransition(Color.black, fadeTime), new FadeInTransition(Color.black, fadeTime));
+        }
+    }
 
-            // If the sponsor has an image.
-            if (sponsor.get("image") != null) {
-                Image image = (Image)sponsor.get("image");
-                if (image.getWidth() > gameContainer.getWidth() - borderSize || image.getHeight() > gameContainer.getHeight() - borderSize) {
-                    image = image.getScaledCopy(Math.min((float) (gameContainer.getWidth() - borderSize) / image.getWidth(), (float) (gameContainer.getHeight() - borderSize) / image.getHeight()));
-                }
+    @Override
+    public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) {
+        // Get the information about the sponsor to display.
+        Map<String, Object> sponsor = sponsors.get(sponsorId);
 
-                image.draw(
-                        (gameContainer.getWidth() - image.getWidth()) / 2,
-                        (gameContainer.getHeight() - image.getHeight()) / 2,
+        // If the sponsor has an image.
+        if (sponsor.get("image") != null) {
+            Image image = (Image) sponsor.get("image");
+            if (image.getWidth() > gameContainer.getWidth() - borderSize || image.getHeight() > gameContainer.getHeight() - borderSize) {
+                image = image.getScaledCopy(Math.min((float) (gameContainer.getWidth() - borderSize) / image.getWidth(), (float) (gameContainer.getHeight() - borderSize) / image.getHeight()));
+            }
+
+            image.draw(
+                    (gameContainer.getWidth() - image.getWidth()) / 2,
+                    (gameContainer.getHeight() - image.getHeight()) / 2/*
                         new Color(
                                 1f, 1f, 1f,
                                 // This works, it's magic, don't ask. And yes you did that yourself. GJ.
                                 Math.min(1, (float) time % displayTime / fadeTime) - (float)Math.max(0, time % displayTime - (displayTime - fadeTime)) / (displayTime - (displayTime - fadeTime))
-                        )
-                );
-            }
-            // If the sponsor has a text.
-            if (sponsor.get("text") != null) {
-                String text = (String) sponsor.get("text");
-                font.drawString(
-                        (gameContainer.getWidth() - font.getWidth(text)) / 2,
-                        gameContainer.getHeight() - font.getHeight(text) - borderSize,
-                        text
-                );
-            }
+                        )*/
+            );
         }
-        else {
-            setNextScene(new MainMenu());
-            end();
+        // If the sponsor has a text.
+        if (sponsor.get("text") != null) {
+            String text = (String) sponsor.get("text");
+            gameContainer.getDefaultFont().drawString(
+                    (gameContainer.getWidth() - gameContainer.getDefaultFont().getWidth(text)) / 2,
+                    gameContainer.getHeight() - gameContainer.getDefaultFont().getHeight(text) - borderSize,
+                    text
+            );
         }
     }
 
     @Override
-    public String toString() {
-        String info = sponsors.size() + " sponsors: " + '\n';
-        for (Map<String, Object> sponsor : sponsors) {
-            info += "   " + sponsor.toString() + '\n';
-        }
-        return info + "Display time of " + displayTime + " ms, fade in/out of " + fadeTime + " ms.";
+    public int getID() {
+        return 0;
     }
+
 }

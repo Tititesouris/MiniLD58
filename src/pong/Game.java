@@ -1,9 +1,9 @@
 
 package pong;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
+import org.newdawn.slick.*;
+import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.StateBasedGame;
 
 /**
  * Game is the game screen scene. That's where the player plays the game.
@@ -12,7 +12,7 @@ import org.newdawn.slick.Graphics;
  * @version 0.0.0
  * @since 2015-03-21
  */
-public class Game extends Scene {
+public class Game extends BasicGameState {
 
     /**
      * Information bar of the game.
@@ -25,28 +25,26 @@ public class Game extends Scene {
     GameField gameField;
 
     @Override
-    public void init(GameContainer gameContainer) {
-        super.init(gameContainer);
-
+    public void init(GameContainer gameContainer, StateBasedGame stateBasedGame) {
         gameInfo = new GameInfo();
         gameField = new GameField(0, 100, gameContainer.getWidth(), gameContainer.getHeight() - 100);
     }
 
     @Override
-    public void update(GameContainer gameContainer, int delta) {
+    public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int delta) {
         //gameInfo.update();
         gameField.update(gameContainer, delta);
     }
 
     @Override
-    public void render(GameContainer gameContainer, Graphics graphics) {
+    public void render(GameContainer gameContainer, StateBasedGame stateBasedGame, Graphics graphics) {
         //gameInfo.render();
         gameField.render(gameContainer, graphics);
     }
 
     @Override
-    public String toString() {
-        return null;
+    public int getID() {
+        return 2;
     }
 
 }

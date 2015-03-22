@@ -2,6 +2,9 @@
 package pong;
 
 import org.newdawn.slick.*;
+import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.FadeInTransition;
+import org.newdawn.slick.state.transition.FadeOutTransition;
 
 /**
  * Program is the Main class of the program. This is where everything starts.
@@ -10,7 +13,7 @@ import org.newdawn.slick.*;
  * @version 0.0.0
  * @since 2015-03-21
  */
-public class Program extends BasicGame implements Constants {
+public class Program extends StateBasedGame implements Constants {
 
     /**
      * When the game is in debug mode the FPS will be shown on screen.
@@ -21,11 +24,6 @@ public class Program extends BasicGame implements Constants {
      * The maximum and target framerate of the game.
      */
     private static final int FPS = 60;
-
-    /**
-     * The active scene.
-     */
-    private Scene scene;
 
     /**
      * Runs the game when the program is executed.
@@ -62,23 +60,22 @@ public class Program extends BasicGame implements Constants {
     }
 
     @Override
-    public void init(GameContainer gameContainer) {
-        scene = new Sponsors(SPONSORS_DIR, 5000, 1000);
-        scene.init(gameContainer);
-    }
-
-    @Override
-    public void update(GameContainer gameContainer, int delta) {
-        scene.update(gameContainer, delta);
-        if (scene.isOver()) {
-            scene = scene.getNextScene();
-            scene.init(gameContainer);
+    public void initStatesList(GameContainer gameContainer) {
+        Font font;
+        try {
+            font = new SpriteSheetFont(new SpriteSheet(RES_DIR + "font.png", 16, 16), ' ');
         }
-    }
+        catch (SlickException e) {
+            e.printStackTrace();
+        }
+        //TODO: remove that when working font.
+        font = gameContainer.getDefaultFont();
 
-    @Override
-    public void render(GameContainer gameContainer, Graphics graphics) {
-        scene.render(gameContainer, graphics);
+        gameContainer.setDefaultFont(font);
+
+        addState(new Sponsors(SPONSORS_DIR, 5000, 1000));
+        addState(new MainMenu());
+        addState(new Game());
     }
 
 }
