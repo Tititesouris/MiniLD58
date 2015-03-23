@@ -44,6 +44,22 @@ public abstract class Entity extends Collidable {
     }
 
     /**
+     * Makes the entity bounce against the specified collidable.
+     *
+     * @param collidable    Collidable to bounce against.
+     */
+    public void bounce(Collidable collidable) {
+        //Collidable col = this.clone();
+        //cancelMove();
+        if (collidable.collides(-1 * (float)speed.getX() + getX(), (float)speed.getY() + getY())) {
+            setSpeed(new Point2D(speed.getX(), -1 * speed.getY()));
+        }
+        else {
+            setSpeed(new Point2D(-1 * speed.getX(), speed.getY()));
+        }
+    }
+
+    /**
      * Returns the sprite of the entity.
      * @return  Sprite of the entity.
      */
@@ -89,8 +105,9 @@ public abstract class Entity extends Collidable {
      */
     public void update(GameContainer gameContainer, int delta) {
         speed.normalize();
-        setX(getX() + (float) (speed.getX() * maxSpeed * (delta / 10f)));
-        setY(getY() + (float)(speed.getY() * maxSpeed * (delta / 10f)));
+        move((float)(speed.getX() * maxSpeed * (delta / 10f)), (float)(speed.getY() * maxSpeed * (delta / 10f)));
+        //setX(getX() + (float) ());
+        //setY(getY() + (float)());
     }
 
     /**

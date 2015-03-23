@@ -1,6 +1,7 @@
 
 package pong;
 
+import javafx.geometry.Point2D;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -44,7 +45,7 @@ public class Ball extends Entity {
     public void update(GameContainer gameContainer, int delta) {
         super.update(gameContainer, delta);
         if (getColliding().size() > 0) {
-            setSpeed(getSpeed().multiply(-1));
+            bounce(getColliding().get(0));
         }
     }
 

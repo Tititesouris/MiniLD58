@@ -1,7 +1,9 @@
 
 package pong;
 
+import javafx.geometry.Point2D;
 import org.lwjgl.Sys;
+import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Transform;
@@ -29,6 +31,11 @@ public abstract class Collidable implements Constants {
     private Shape shape;
 
     /**
+     * Last position of the collidable.
+     */
+    private Point2D lastPosition;
+
+    /**
      * Whether or not the collidable covers the whole area or just the border.
      */
     private boolean filled;
@@ -41,6 +48,7 @@ public abstract class Collidable implements Constants {
      */
     public Collidable(Shape shape, boolean filled) {
         this.shape = shape;
+        lastPosition = new Point2D(shape.getX(), shape.getY());
         this.filled = filled;
         collidables.add(this);
     }
@@ -48,11 +56,23 @@ public abstract class Collidable implements Constants {
     /**
      * Returns true if this collidable collides with the specified collidable, false otherwise.
      *
-     * @param collidable    Collidable to test collision with.
+     * @param collidable    Collidable to check collision with.
      * @return              True if this collidable collides with the specified collidable, false otherwise.
      */
     public boolean collides(Collidable collidable) {
         return (collidable.filled && collidable.shape.contains(shape)) || collidable.shape.intersects(shape);
+    }
+
+    /**
+     * Returns true if this collidable collides with the specified point, false otherwise.
+     *
+     * @param x X coordinate of the point to check collision with.
+     * @param y Y coordinate of the point to check collision with.
+     * @return  True if this collidable collides with the specified point, false otherwise.
+     */
+    public boolean collides(float x, float y) {
+        Point point = new Point(x, y);
+        return (filled && shape.contains(x, y)) || shape.intersects(point);
     }
 
     /**
@@ -68,6 +88,15 @@ public abstract class Collidable implements Constants {
             }
         }
         return colliding;
+    }
+
+    public void move(float x, float y) {
+        lastPosition = new Point2D(getX(), getY());
+        shape.setLocation(getX() + x, getY() + y);
+    }
+
+    public void cancelMove() {
+        shape.setLocation((float)lastPosition.getX(), (float)lastPosition.getY());
     }
 
     /**
